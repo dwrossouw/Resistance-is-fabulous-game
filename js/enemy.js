@@ -18,4 +18,9 @@ class Enemy {
     this.node.style.top = `${this.y}px`;
     this.node.style.left = `${this.x}px`;
   }
+
+  move() {
+    this.x -= 2;
+    this.node.style.left = `${this.x}px`;
+  }
 }

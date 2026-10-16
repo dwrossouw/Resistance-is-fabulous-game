@@ -8,28 +8,120 @@ const gameBoxNode = document.querySelector("#game-box");
 //GLOBAL GAME VARIABLES
 let playerObj = null;
 let enemiesArr = [];
-let testEnemy1 = null;
-let testEnemy2 = null;
+let mainIntervalId = null;
+let enemyInervalId = null;
+let isGameRunning = false;
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
-  //Changing the screens
   startScreenNode.style.display = "none";
   gameScreenNode.style.display = "flex";
 
   //Adding the initial elements of the game
   addPlayer();
   addEnemy();
+
+  isGameRunning = true;
+  mainIntervalId = requestAnimationFrame(gameLoop);
+  enemyInervalId = setInterval(addEnemy, 2000);
+}
+
+function gameLoop() {
+  if (!isGameRunning) {
+    return;
+  }
+  enemiesArr.forEach((enemy) => {
+    enemy.move();
+  });
+
+  checkEnemyDespawn();
+  checkCollisionPlayerEnemy();
+
+  if (!isGameRunning) {
+    return;
+  }
+
+  mainIntervalId = requestAnimationFrame(gameLoop);
 }
 
 function addPlayer() {
   playerObj = new Player();
 }
 
-function addEnemy (){
-    let testEnemy1 = new Enemy (300);
-    let testEnemy2 = new Enemy (350);
+function addEnemy() {
+  let posY = Math.random() > 0.5 ? 300 : 350;
+
+  let newEnemy = new Enemy(posY);
+  enemiesArr.push(newEnemy);
+}
+
+function checkEnemyDespawn() {
+  if (enemiesArr[0] && enemiesArr[0].x < -100) {
+    enemiesArr[0].node.remove();
+    enemiesArr.shift();
+  }
+}
+
+function checkCollision(element1, element2) {
+  return (
+    element1.x < element2.x + element2.width &&
+    element1.x + element1.width > element2.x &&
+    element1.y < element2.y + element2.height &&
+    element1.y + element1.height > element2.y
+  );
+}
+
+function checkCollisionPlayerEnemy() {
+  enemiesArr.forEach((enemy) => {
+    if (checkCollision(enemy, playerObj)) {
+      gameOver();
+    }
+  });
+}
+
+function gameOver() {
+  isGameRunning = false;
+
+  gameScreenNode.style.display = "none";
+  gameOverScreenNode.style.display = "flex";
 }
 
 //EVENT LISTENERS
 startBtnNode.addEventListener("click", gameStart);
+
+window.addEventListener("keydown", (event) => {
+  if (!isGameRunning) {
+    return;
+  }
+  if (event.code === "ArrowUp") {
+    if (!playerObj.isJumping && !event.repeat) {
+      playerObj.isJumping = true;
+
+      playerObj.moveUp();
+      playerObj.moveUp();
+
+      setTimeout(() => {
+        playerObj.moveDown();
+        playerObj.moveDown();
+
+        playerObj.isJumping = false;
+      }, 500);
+    }
+  } else if (event.code === "ArrowDown") {
+    if (!playerObj.isDucking) {
+      playerObj.isDucking = true;
+      playerObj.duck();
+    }
+  }
+});
+
+window.addEventListener("keyup", (event) => {
+  if (!isGameRunning) {
+    return;
+  }
+
+  if (event.code === "ArrowDown" && playerObj.isDucking) {
+    playerObj.isDucking = false;
+    playerObj.duckReset();
+  }
+});
