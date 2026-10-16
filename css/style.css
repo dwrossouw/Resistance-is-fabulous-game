@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, purple);
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+button{
+    background-color:hotpink;
+    color:beige;
+    padding: 14px 24px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 999px;
+    cursor:crosshair;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#game-screen, #game-over-screen {
+  display: none;
+}
