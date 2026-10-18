@@ -5,7 +5,7 @@ const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
-const timerNode = document.querySelector ("#timer");
+const timerNode = document.querySelector("#timer");
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -60,7 +60,7 @@ function addPlayer() {
 }
 
 function addEnemy() {
-  let posY = Math.random() > 0.5 ? 250 : 300;
+  let posY = Math.random() > 0.5 ? 265 : 315;
 
   let newEnemy = new Enemy(posY);
   enemiesArr.push(newEnemy);
@@ -113,16 +113,18 @@ function gameRestart() {
   isGameRunning = false;
 }
 
-function startTimer(){
-  timerIntervalId = setInterval (()=>{
+function startTimer() {
+  timerIntervalId = setInterval(() => {
     timer++;
     timerUpdate();
   }, 1000);
 }
 
-function timerUpdate(){
-  const minutes = Math.floor (timer/60).toString().padStart (2, "0");
-  const seconds = (timer%60).toString().padStart(2, "0");
+function timerUpdate() {
+  const minutes = Math.floor(timer / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = (timer % 60).toString().padStart(2, "0");
   timerNode.innerText = `${minutes}:${seconds}`;
 }
 
@@ -135,21 +137,28 @@ window.addEventListener("keydown", (event) => {
     return;
   }
   if (event.code === "ArrowUp") {
-    if (!playerObj.isJumping && !event.repeat) {
+    //Checks three conditions before jumping can be implemented
+    if (!playerObj.isJumping && !event.repeat && !playerObj.isDucking) {
       playerObj.isJumping = true;
+      playerObj.node.src = "/images/characterJump.png";
 
       playerObj.moveUp();
       playerObj.moveUp();
+      playerObj.moveUp();
+     
 
       setTimeout(() => {
         playerObj.moveDown();
         playerObj.moveDown();
-
+        playerObj.moveDown();
+        
+        playerObj.node.src = "/images/characterRun1.png";
         playerObj.isJumping = false;
       }, 500);
     }
   } else if (event.code === "ArrowDown") {
-    if (!playerObj.isDucking) {
+    if (!playerObj.isDucking && !playerObj.isJumping) {
+      playerObj.node.src = "/images/characterDuck.png";
       playerObj.isDucking = true;
       playerObj.duck();
     }
@@ -164,5 +173,6 @@ window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowDown" && playerObj.isDucking) {
     playerObj.isDucking = false;
     playerObj.duckReset();
+    playerObj.node.src = "/images/characterRun1.png";
   }
 });
