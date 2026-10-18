@@ -3,14 +3,17 @@ const startScreenNode = document.querySelector("#start-screen");
 const gameScreenNode = document.querySelector("#game-screen");
 const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
+const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
 let enemiesArr = [];
-let mainIntervalId = null;
-let enemyInervalId = null;
 let isGameRunning = false;
+
+let mainIntervalId = null;
+let enemyIntervalId = null;
+let runningIntervalId = null;
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -23,7 +26,10 @@ function gameStart() {
 
   isGameRunning = true;
   mainIntervalId = requestAnimationFrame(gameLoop);
-  enemyInervalId = setInterval(addEnemy, 2000);
+  enemyIntervalId = setInterval(addEnemy, 2000);
+  runningIntervalId = setInterval(() => {
+    playerObj.changeSprite();
+  }, 150);
 }
 
 function gameLoop() {
@@ -81,13 +87,26 @@ function checkCollisionPlayerEnemy() {
 
 function gameOver() {
   isGameRunning = false;
-
+  clearInterval(enemyIntervalId);
+  clearInterval(runningIntervalId);
   gameScreenNode.style.display = "none";
   gameOverScreenNode.style.display = "flex";
 }
 
+function gameRestart() {
+  gameOverScreenNode.style.display = "none";
+  startScreenNode.style.display = "flex";
+  playerObj.node.remove();
+  enemiesArr.forEach((element) => {
+    element.node.remove();
+  });
+  playerObj = null;
+  enemiesArr = [];
+}
+
 //EVENT LISTENERS
 startBtnNode.addEventListener("click", gameStart);
+restartBtnNode.addEventListener("click", gameRestart);
 
 window.addEventListener("keydown", (event) => {
   if (!isGameRunning) {

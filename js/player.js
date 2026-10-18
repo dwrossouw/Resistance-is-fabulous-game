@@ -1,6 +1,8 @@
 class Player {
   constructor() {
-    this.node = document.createElement("div");
+    //this.node = document.createElement("div");
+    this.node = document.createElement("img");
+    this.node.src = "/images/characterRun1.png"
     gameBoxNode.append(this.node);
     this.node.className = "player";
 
@@ -11,13 +13,16 @@ class Player {
 
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;
-    this.node.style.backgroundColor = "white";
+    //this.node.style.backgroundColor = "white";
 
     this.node.style.position = "absolute";
     this.node.style.top = `${this.y}px`;
     this.node.style.left = `${this.x}px`;
 
     this.speed = 20;
+
+    this.isJumping = false;
+    this.isDucking = false;
   }
 
   moveUp() {
@@ -40,5 +45,13 @@ class Player {
     this.y -= 50;
     this.node.style.top = `${this.y}px`;
     this.node.style.height = "100px";
+  }
+
+  changeSprite(){
+    if (this.node.src.endsWith("characterRun1.png")){
+      this.node.src = "/images/characterRun2.png";
+    } else if (this.node.src.endsWith("characterRun2.png")){
+      this.node.src = "/images/characterRun1.png";
+    }
   }
 }
