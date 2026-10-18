@@ -5,6 +5,7 @@ const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
+const timerNode = document.querySelector ("#timer");
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -14,6 +15,9 @@ let isGameRunning = false;
 let mainIntervalId = null;
 let enemyIntervalId = null;
 let runningIntervalId = null;
+let timerIntervalId = null;
+
+let timer = 0;
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -23,6 +27,7 @@ function gameStart() {
   //Adding the initial elements of the game
   addPlayer();
   addEnemy();
+  startTimer();
 
   isGameRunning = true;
   mainIntervalId = requestAnimationFrame(gameLoop);
@@ -55,7 +60,7 @@ function addPlayer() {
 }
 
 function addEnemy() {
-  let posY = Math.random() > 0.5 ? 300 : 350;
+  let posY = Math.random() > 0.5 ? 250 : 300;
 
   let newEnemy = new Enemy(posY);
   enemiesArr.push(newEnemy);
@@ -89,6 +94,7 @@ function gameOver() {
   isGameRunning = false;
   clearInterval(enemyIntervalId);
   clearInterval(runningIntervalId);
+  clearInterval(timerIntervalId);
   gameScreenNode.style.display = "none";
   gameOverScreenNode.style.display = "flex";
 }
@@ -102,6 +108,22 @@ function gameRestart() {
   });
   playerObj = null;
   enemiesArr = [];
+  timer = 0;
+  timerUpdate();
+  isGameRunning = false;
+}
+
+function startTimer(){
+  timerIntervalId = setInterval (()=>{
+    timer++;
+    timerUpdate();
+  }, 1000);
+}
+
+function timerUpdate(){
+  const minutes = Math.floor (timer/60).toString().padStart (2, "0");
+  const seconds = (timer%60).toString().padStart(2, "0");
+  timerNode.innerText = `${minutes}:${seconds}`;
 }
 
 //EVENT LISTENERS

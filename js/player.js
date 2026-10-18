@@ -7,7 +7,7 @@ class Player {
     this.node.className = "player";
 
     this.x = 200;
-    this.y = 300;
+    this.y = 250;
     this.width = 50;
     this.height = 100;
 
