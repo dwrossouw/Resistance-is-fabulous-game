@@ -1,6 +1,7 @@
 class Enemy {
   constructor(posY) {
-    this.node = document.createElement("div");
+    this.node = document.createElement("img");
+    this.node.src = "/images/glittercloud.png";
     gameBoxNode.append(this.node);
     this.node.className = "enemy";
 
@@ -11,8 +12,6 @@ class Enemy {
 
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;
-    this.node.style.backgroundColor = "red";
-    this.node.style.border = "solid white 2px";
     this.node.style.zIndex = "4";
 
     this.node.style.position = "absolute";

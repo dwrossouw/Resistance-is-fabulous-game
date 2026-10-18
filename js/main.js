@@ -61,8 +61,10 @@ function addPlayer() {
 
 function addEnemy() {
   let posY = Math.random() > 0.5 ? 265 : 315;
-
   let newEnemy = new Enemy(posY);
+  if(posY === 315){
+    newEnemy.node.src = "/images/paint.png"
+  }
   enemiesArr.push(newEnemy);
 }
 
