@@ -13,6 +13,7 @@ class Enemy {
     this.node.style.height = `${this.height}px`;
     this.node.style.backgroundColor = "red";
     this.node.style.border = "solid white 2px";
+    this.node.style.zIndex = "4";
 
     this.node.style.position = "absolute";
     this.node.style.top = `${this.y}px`;

@@ -43,26 +43,45 @@ button:hover {
 
 #skyline {
   position: absolute;
-  height: 150px;
-  width: 100%;
+  z-index: 1;
   top: 0;
-  background-color: blue;
+  height: 350px;
+  width: 100%;
+  
+  
+  background-image: url("/images/skyline.png");
+  background-repeat: repeat-x;
+  background-size: auto 350px;
+  background-position: left -100px;
+  animation: moveSkyline 19.46s linear infinite;
 }
 
 #buildings {
   position: absolute;
-  height: 200px;
+  z-index: 2;
+  height: 300px;
   width: 100%;
-  top: 150px;
-  background-color: chartreuse;
+  top: 50px;
+
+  background-image: url("/images/buildings.png");
+  background-repeat: repeat-x;
+  background-size: auto 300px;
+
+  animation: moveBuildings 10.97s linear infinite;
 }
 
 #road {
   position: absolute;
+  z-index: 3;
   height: 100px;
   width: 100%;
   bottom: 0;
-  background-color: brown;
+
+  background-image: url("/images/road.png");
+  background-repeat: repeat-x;
+  background-size: auto 100px;
+
+  animation: moveRoad 2s linear infinite;
 }
 
 #game-screen,
@@ -82,6 +101,33 @@ button:hover {
 }
 
 #timer {
-   background-color: yellow;
+  background-color: yellow;
   color: black;
+}
+
+@keyframes moveRoad {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -400px;
+  }
+}
+
+@keyframes moveBuildings {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -1096.97px;
+  }
+}
+
+@keyframes moveSkyline {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -973.20px;
+  }
 }

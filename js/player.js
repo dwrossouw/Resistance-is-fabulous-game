@@ -10,10 +10,10 @@ class Player {
     this.y = 250;
     this.width = 50;
     this.height = 100;
-
+    
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;
-    //this.node.style.backgroundColor = "white";
+    this.node.style.zIndex = "4";
 
     this.node.style.position = "absolute";
     this.node.style.top = `${this.y}px`;
