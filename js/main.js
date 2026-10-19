@@ -10,6 +10,7 @@ const fabObjectNode = document.querySelector("#fab-object");
 const gameOverTimeNode = document.querySelector("#game-over-screen h3");
 const startScreenImageNode = document.querySelector("#start-screen img");
 
+//AUDIO ELEMENTS
 const startMusic = new Audio("/sounds/startMusic.mp3");
 const gameMusic = new Audio("/sounds/gameMusic.mp3");
 const gameOverMusic = new Audio("/sounds/gameOverMusic.mp3");
@@ -48,9 +49,9 @@ let finalTime;
 let fabCount = 0;
 
 //GLOBAL GAME FUNCTIONS
-//startScreenImage();
 function gameStart() {
   startMusic.pause();
+  startMusic.currentTime = 0;
   startScreenNode.style.display = "none";
   gameScreenNode.style.display = "flex";
 
@@ -62,9 +63,10 @@ function gameStart() {
   gameMusic.play();
 
   isGameRunning = true;
-  mainIntervalId = requestAnimationFrame(gameLoop);
-  enemyIntervalId = setInterval(addEnemy, 2000);
-  runningIntervalId = setInterval(() => {
+  //Starts the main game loop which updates enemy movement and checks for collisions on each animation frame
+  mainIntervalId = requestAnimationFrame(gameLoop); 
+  enemyIntervalId = setInterval(addEnemy, 2000);//Spawn objects every 2 seconds
+  runningIntervalId = setInterval(() => { //Interval to create running effect
     playerObj.changeSprite();
   }, 150);
 }
@@ -141,7 +143,9 @@ function checkCollisionPlayerEnemy() {
 
 function gameOver() {
   gameMusic.pause();
+  gameMusic.currentTime = 0;
   gameOverMusic.play();
+
   isGameRunning = false;
   clearInterval(enemyIntervalId);
   clearInterval(runningIntervalId);
@@ -159,9 +163,11 @@ function gameRestart() {
   gameOverScreenNode.style.display = "none";
   startScreenNode.style.display = "flex";
   playerObj.node.remove();
+
   enemiesArr.forEach((element) => {
     element.node.remove();
   });
+
   playerObj = null;
   enemiesArr = [];
   timer = 0;
@@ -170,6 +176,7 @@ function gameRestart() {
   timerUpdate();
   isGameRunning = false;
   gameOverMusic.pause();
+  gameOverMusic.currentTime = 0;
 }
 
 function startTimer() {
@@ -188,32 +195,20 @@ function timerUpdate() {
 }
 
 function fabulousBar() {
-  let progress = 1;
-  progress = fabCount * 120;
+  let progress = fabCount * 120;
   fabObjectNode.style.left = `${progress}px`;
 }
 
 function finalTimeGameOver() {
   let message = ``;
   if (timer < 60) {
-    message = `It took you only ${timer} seconds to become fabulous.`;
-  } else if (timer > 60) {
+    message = `It took you ${timer} seconds to become fabulous.`;
+  } else if (timer >= 60) {
     const min = Math.floor(timer / 60);
     const sec = timer % 60;
-    message = `It took you only ${min} minute(s) and ${sec} second(s) to become fabulous.`;
+    message = `It took you ${min} minute(s) and ${sec} second(s) to become fabulous.`;
   }
   gameOverTimeNode.innerText = message;
-}
-
-function startScreenImage() {
-  startScreenImageNode.style.visibility = "visible";
-  setInterval(() => {
-    if (startScreenImageNode.style.visibility === "visible") {
-      startScreenImageNode.style.visibility = "hidden";
-    } else if ((startScreenImageNode.style.visibility = "hidden")) {
-      startScreenImageNode.style.visibility = "visible";
-    }
-  }, 500);
 }
 
 //EVENT LISTENERS
