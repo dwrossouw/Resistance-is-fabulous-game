@@ -27,6 +27,10 @@ button:hover {
   background-color: #7472ed;
 }
 
+#start-screen img {
+  width: 400px
+}
+
 #game-box {
   background: grey;
   width: 800px;
@@ -97,6 +101,11 @@ button:hover {
   display: flex;
   justify-content: left;
   align-items: center;
+}
+
+#game-over-screen img {
+  width: 400px;
+  height: auto;
 }
 
 #timer {

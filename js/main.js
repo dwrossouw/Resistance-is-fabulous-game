@@ -6,7 +6,9 @@ const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const timerNode = document.querySelector("#timer");
-const fabObject = document.querySelector("#fab-object");
+const fabObjectNode = document.querySelector("#fab-object");
+const gameOverTimeNode = document.querySelector ("#game-over-screen h3");
+const startScreenImageNode = document.querySelector("#start-screen img");
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -35,9 +37,12 @@ let runningIntervalId = null;
 let timerIntervalId = null;
 
 let timer = 0;
+let finalTime;
 let fabCount = 0;
 
 //GLOBAL GAME FUNCTIONS
+console.log(startScreenImageNode);
+startScreenImage();
 function gameStart() {
   startScreenNode.style.display = "none";
   gameScreenNode.style.display = "flex";
@@ -135,6 +140,8 @@ function gameOver() {
     gameScreenNode.style.display = "none";
     gameOverScreenNode.style.display = "flex";
   }, 500);
+
+  finalTimeGameOver();
 }
 
 function gameRestart() {
@@ -148,7 +155,7 @@ function gameRestart() {
   enemiesArr = [];
   timer = 0;
   fabCount = 0;
-  fabObject.style.left = "0px";
+  fabObjectNode.style.left = "0px";
   timerUpdate();
   isGameRunning = false;
 }
@@ -165,13 +172,40 @@ function timerUpdate() {
     .toString()
     .padStart(2, "0");
   const seconds = (timer % 60).toString().padStart(2, "0");
-  timerNode.innerText = `${minutes}:${seconds}`;
+  finalTime = timerNode.innerText = `${minutes}:${seconds}`;
+  
 }
 
 function fabulousBar() {
   let progress = 1;
   progress = fabCount * 120;
-  fabObject.style.left = `${progress}px`;
+  fabObjectNode.style.left = `${progress}px`;
+}
+
+function finalTimeGameOver (){
+  let message = ``;
+  if (timer<60){
+    message = `It took you only ${timer} seconds to become fabulous.`
+  }
+  else if (timer > 60) {
+    const min = Math.floor (timer/60);
+    const sec = timer%60;
+    message = `It took you only ${min} minute(s) and ${sec} second(s) to become fabulous.`
+    
+  }
+  gameOverTimeNode.innerText = message;
+  console.log(message);
+}
+
+function startScreenImage(){
+  startScreenImageNode.style.visibility = "visible";
+  setInterval (()=>{
+    if (startScreenImageNode.style.visibility === "visible"){
+      startScreenImageNode.style.visibility = "hidden";
+    } else if (startScreenImageNode.style.visibility = "hidden") {
+      startScreenImageNode.style.visibility = "visible";
+    }
+  },500)
 }
 
 //EVENT LISTENERS
