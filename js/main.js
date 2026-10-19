@@ -7,8 +7,15 @@ const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const timerNode = document.querySelector("#timer");
 const fabObjectNode = document.querySelector("#fab-object");
-const gameOverTimeNode = document.querySelector ("#game-over-screen h3");
+const gameOverTimeNode = document.querySelector("#game-over-screen h3");
 const startScreenImageNode = document.querySelector("#start-screen img");
+
+const startMusic = new Audio("/sounds/startMusic.mp3");
+const gameMusic = new Audio("/sounds/gameMusic.mp3");
+const gameOverMusic = new Audio("/sounds/gameOverMusic.mp3");
+
+startMusic.loop = true;
+gameMusic.loop = true;
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -41,9 +48,9 @@ let finalTime;
 let fabCount = 0;
 
 //GLOBAL GAME FUNCTIONS
-console.log(startScreenImageNode);
-startScreenImage();
+//startScreenImage();
 function gameStart() {
+  startMusic.pause();
   startScreenNode.style.display = "none";
   gameScreenNode.style.display = "flex";
 
@@ -51,6 +58,8 @@ function gameStart() {
   addPlayer();
   addEnemy();
   startTimer();
+
+  gameMusic.play();
 
   isGameRunning = true;
   mainIntervalId = requestAnimationFrame(gameLoop);
@@ -131,6 +140,8 @@ function checkCollisionPlayerEnemy() {
 }
 
 function gameOver() {
+  gameMusic.pause();
+  gameOverMusic.play();
   isGameRunning = false;
   clearInterval(enemyIntervalId);
   clearInterval(runningIntervalId);
@@ -158,6 +169,7 @@ function gameRestart() {
   fabObjectNode.style.left = "0px";
   timerUpdate();
   isGameRunning = false;
+  gameOverMusic.pause();
 }
 
 function startTimer() {
@@ -173,7 +185,6 @@ function timerUpdate() {
     .padStart(2, "0");
   const seconds = (timer % 60).toString().padStart(2, "0");
   finalTime = timerNode.innerText = `${minutes}:${seconds}`;
-  
 }
 
 function fabulousBar() {
@@ -182,35 +193,39 @@ function fabulousBar() {
   fabObjectNode.style.left = `${progress}px`;
 }
 
-function finalTimeGameOver (){
+function finalTimeGameOver() {
   let message = ``;
-  if (timer<60){
-    message = `It took you only ${timer} seconds to become fabulous.`
-  }
-  else if (timer > 60) {
-    const min = Math.floor (timer/60);
-    const sec = timer%60;
-    message = `It took you only ${min} minute(s) and ${sec} second(s) to become fabulous.`
-    
+  if (timer < 60) {
+    message = `It took you only ${timer} seconds to become fabulous.`;
+  } else if (timer > 60) {
+    const min = Math.floor(timer / 60);
+    const sec = timer % 60;
+    message = `It took you only ${min} minute(s) and ${sec} second(s) to become fabulous.`;
   }
   gameOverTimeNode.innerText = message;
-  console.log(message);
 }
 
-function startScreenImage(){
+function startScreenImage() {
   startScreenImageNode.style.visibility = "visible";
-  setInterval (()=>{
-    if (startScreenImageNode.style.visibility === "visible"){
+  setInterval(() => {
+    if (startScreenImageNode.style.visibility === "visible") {
       startScreenImageNode.style.visibility = "hidden";
-    } else if (startScreenImageNode.style.visibility = "hidden") {
+    } else if ((startScreenImageNode.style.visibility = "hidden")) {
       startScreenImageNode.style.visibility = "visible";
     }
-  },500)
+  }, 500);
 }
 
 //EVENT LISTENERS
-startBtnNode.addEventListener("click", gameStart);
+startBtnNode.addEventListener("click", (event) => {
+  event.stopPropagation();
+  gameStart();
+});
 restartBtnNode.addEventListener("click", gameRestart);
+
+startScreenNode.addEventListener("click", () => {
+  startMusic.play();
+});
 
 window.addEventListener("keydown", (event) => {
   if (!isGameRunning) {
