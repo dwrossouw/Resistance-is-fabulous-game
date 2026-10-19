@@ -6,14 +6,29 @@ const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const timerNode = document.querySelector("#timer");
-//const fabMeter = document.querySelector("#fab-meter");
 const fabObject = document.querySelector("#fab-object");
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
 let enemiesArr = [];
-let isGameRunning = false;
+let enemiesAirArr = [
+  "/images/smallflags.png",
+  "/images/discoball.png",
+  "/images/featherboa.png",
+  "/images/glittercloud.png",
+  "/images/smallflags.png",
+  "/images/heart.png",
+];
+let enemiesGroundArr = [
+  "/images/cupcake.png",
+  "/images/flowers.png",
+  "/images/megaphone.png",
+  "/images/prideflag.png",
+  "/images/paint.png",
+  "/images/skates.png",
+];
 
+let isGameRunning = false;
 let mainIntervalId = null;
 let enemyIntervalId = null;
 let runningIntervalId = null;
@@ -64,9 +79,15 @@ function addPlayer() {
 
 function addEnemy() {
   let posY = Math.random() > 0.5 ? 265 : 315;
+  let picArrLength =
+    posY === 315 ? enemiesGroundArr.length : enemiesAirArr.length;
+  let randomEnemy = Math.floor(Math.random() * picArrLength);
   let newEnemy = new Enemy(posY);
+
   if (posY === 315) {
-    newEnemy.node.src = "/images/paint.png";
+    newEnemy.node.src = enemiesGroundArr[randomEnemy];
+  } else if (posY === 265) {
+    newEnemy.node.src = enemiesAirArr[randomEnemy];
   }
   enemiesArr.push(newEnemy);
 }
