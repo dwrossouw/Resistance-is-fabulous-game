@@ -6,6 +6,8 @@ const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const timerNode = document.querySelector("#timer");
+//const fabMeter = document.querySelector("#fab-meter");
+const fabObject = document.querySelector("#fab-object");
 
 //GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -18,6 +20,7 @@ let runningIntervalId = null;
 let timerIntervalId = null;
 
 let timer = 0;
+let fabCount = 0;
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -62,8 +65,8 @@ function addPlayer() {
 function addEnemy() {
   let posY = Math.random() > 0.5 ? 265 : 315;
   let newEnemy = new Enemy(posY);
-  if(posY === 315){
-    newEnemy.node.src = "/images/paint.png"
+  if (posY === 315) {
+    newEnemy.node.src = "/images/paint.png";
   }
   enemiesArr.push(newEnemy);
 }
@@ -87,7 +90,16 @@ function checkCollision(element1, element2) {
 function checkCollisionPlayerEnemy() {
   enemiesArr.forEach((enemy) => {
     if (checkCollision(enemy, playerObj)) {
-      gameOver();
+      if (!enemy.isColliding) {
+        fabCount++;
+        fabulousBar();
+        enemy.isColliding = true;
+        if (fabCount >= 5) {
+          gameOver();
+        }
+      }
+    } else {
+      enemy.isColliding = false;
     }
   });
 }
@@ -97,8 +109,11 @@ function gameOver() {
   clearInterval(enemyIntervalId);
   clearInterval(runningIntervalId);
   clearInterval(timerIntervalId);
-  gameScreenNode.style.display = "none";
-  gameOverScreenNode.style.display = "flex";
+
+  setTimeout(() => {
+    gameScreenNode.style.display = "none";
+    gameOverScreenNode.style.display = "flex";
+  }, 500);
 }
 
 function gameRestart() {
@@ -111,6 +126,8 @@ function gameRestart() {
   playerObj = null;
   enemiesArr = [];
   timer = 0;
+  fabCount = 0;
+  fabObject.style.left = "0px";
   timerUpdate();
   isGameRunning = false;
 }
@@ -130,6 +147,12 @@ function timerUpdate() {
   timerNode.innerText = `${minutes}:${seconds}`;
 }
 
+function fabulousBar() {
+  let progress = 1;
+  progress = fabCount * 120;
+  fabObject.style.left = `${progress}px`;
+}
+
 //EVENT LISTENERS
 startBtnNode.addEventListener("click", gameStart);
 restartBtnNode.addEventListener("click", gameRestart);
@@ -147,13 +170,12 @@ window.addEventListener("keydown", (event) => {
       playerObj.moveUp();
       playerObj.moveUp();
       playerObj.moveUp();
-     
 
       setTimeout(() => {
         playerObj.moveDown();
         playerObj.moveDown();
         playerObj.moveDown();
-        
+
         playerObj.node.src = "/images/characterRun1.png";
         playerObj.isJumping = false;
       }, 500);

@@ -47,8 +47,7 @@ button:hover {
   top: 0;
   height: 350px;
   width: 100%;
-  
-  
+
   background-image: url("/images/skyline.png");
   background-repeat: repeat-x;
   background-size: auto 350px;
@@ -96,13 +95,30 @@ button:hover {
   right: 10px;
   z-index: 10;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
 }
 
 #timer {
-  background-color: yellow;
   color: black;
+  font-size: 50px;
+}
+
+#fab-meter {
+  position: relative;
+  height: 50px;
+  width: 700px;
+  background-color: rgb(138, 43, 226, 0.5);
+  border-radius: 50px;
+}
+
+#fab-object {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  transition: left 0.5s ease;
 }
 
 @keyframes moveRoad {
@@ -128,6 +144,6 @@ button:hover {
     background-position-x: 0;
   }
   to {
-    background-position-x: -973.20px;
+    background-position-x: -973.2px;
   }
 }
