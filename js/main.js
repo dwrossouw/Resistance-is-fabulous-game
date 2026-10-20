@@ -47,6 +47,7 @@ let timerIntervalId = null;
 let timer = 0;
 let finalTime;
 let fabCount = 0;
+let charLevel = 'level1';
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -67,7 +68,7 @@ function gameStart() {
   mainAnimationId = requestAnimationFrame(gameLoop); 
   enemyIntervalId = setInterval(addEnemy, 2000);//Spawn objects every 2 seconds
   runningIntervalId = setInterval(() => { //Interval to create running effect
-    playerObj.changeSprite();
+    playerObj.changeSprite(charLevel);
   }, 150);
 }
 
@@ -132,6 +133,7 @@ function checkCollisionPlayerEnemy() {
     if (checkCollision(enemy, playerObj)) {
       if (!enemy.isColliding) {
         fabCount++;
+        charLevel = `level${fabCount+1}`;
         fabulousBar();
         enemy.isColliding = true;
         if (fabCount >= 5) {
@@ -153,6 +155,7 @@ function gameOver() {
   clearInterval(enemyIntervalId);
   clearInterval(runningIntervalId);
   clearInterval(timerIntervalId);
+  playerObj.node.src = characterSprites["level6"][0];
 
   setTimeout(() => {
     gameScreenNode.style.display = "none";
@@ -175,6 +178,7 @@ function gameRestart() {
   enemiesArr = [];
   timer = 0;
   fabCount = 0;
+  charLevel = 'level1';
   fabObjectNode.style.left = "0px";
   timerUpdate();
   isGameRunning = false;
@@ -205,11 +209,11 @@ function fabulousBar() {
 function finalTimeGameOver() {
   let message = ``;
   if (timer < 60) {
-    message = `It took you ${timer} seconds to become fabulous.`;
+    message = `You resisted only ${timer} seconds before becoming FABULOUS!`;
   } else if (timer >= 60) {
     const min = Math.floor(timer / 60);
     const sec = timer % 60;
-    message = `It took you ${min} minute(s) and ${sec} second(s) to become fabulous.`;
+    message = `You resisted only ${min} minute(s) and ${sec} second(s)before becoming FABULOUS!`;
   }
   gameOverTimeNode.innerText = message;
 }
@@ -226,6 +230,7 @@ startScreenNode.addEventListener("click", () => {
 });
 
 window.addEventListener("keydown", (event) => {
+  
   if (!isGameRunning) {
     return;
   }
@@ -233,7 +238,7 @@ window.addEventListener("keydown", (event) => {
     //Checks three conditions before jumping can be implemented
     if (!playerObj.isJumping && !event.repeat && !playerObj.isDucking) {
       playerObj.isJumping = true;
-      playerObj.node.src = "./images/sprites/character2Jump.png";
+      playerObj.node.src = characterSprites [charLevel][2];
 
       playerObj.moveUp();
       playerObj.moveUp();
@@ -244,13 +249,13 @@ window.addEventListener("keydown", (event) => {
         playerObj.moveDown();
         playerObj.moveDown();
 
-        playerObj.node.src = "./images/sprites/character2Run1.png";
+        playerObj.node.src = characterSprites [charLevel][0];
         playerObj.isJumping = false;
       }, 500);
     }
   } else if (event.code === "ArrowDown") {
     if (!playerObj.isDucking && !playerObj.isJumping) {
-      playerObj.node.src = "./images/sprites/character2Duck.png";
+      playerObj.node.src = characterSprites [charLevel][3];
       playerObj.isDucking = true;
       playerObj.duck();
     }
@@ -265,6 +270,6 @@ window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowDown" && playerObj.isDucking) {
     playerObj.isDucking = false;
     playerObj.duckReset();
-    playerObj.node.src = "./images/sprites/character2Run1.png";
+    playerObj.node.src = characterSprites [charLevel][0];
   }
 });
