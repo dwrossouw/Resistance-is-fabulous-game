@@ -11,9 +11,9 @@ const gameOverTimeNode = document.querySelector("#game-over-screen h3");
 const startScreenImageNode = document.querySelector("#start-screen img");
 
 //AUDIO ELEMENTS
-const startMusic = new Audio("/sounds/startMusic.mp3");
-const gameMusic = new Audio("/sounds/gameMusic.mp3");
-const gameOverMusic = new Audio("/sounds/gameOverMusic.mp3");
+const startMusic = new Audio("./sounds/startMusic.mp3");
+const gameMusic = new Audio("./sounds/gameMusic.mp3");
+const gameOverMusic = new Audio("./sounds/gameOverMusic.mp3");
 
 startMusic.loop = true;
 gameMusic.loop = true;
@@ -22,24 +22,24 @@ gameMusic.loop = true;
 let playerObj = null;
 let enemiesArr = [];
 let enemiesAirArr = [
-  "/images/smallflags.png",
-  "/images/discoball.png",
-  "/images/featherboa.png",
-  "/images/glittercloud.png",
-  "/images/smallflags.png",
-  "/images/heart.png",
+  "./images/smallflags.png",
+  "./images/discoball.png",
+  "./images/featherboa.png",
+  "./images/glittercloud.png",
+  "./images/smallflags.png",
+  "./images/heart.png",
 ];
 let enemiesGroundArr = [
-  "/images/cupcake.png",
-  "/images/flowers.png",
-  "/images/megaphone.png",
-  "/images/prideflag.png",
-  "/images/paint.png",
-  "/images/skates.png",
+  "./images/cupcake.png",
+  "./images/flowers.png",
+  "./images/megaphone.png",
+  "./images/prideflag.png",
+  "./images/paint.png",
+  "./images/skates.png",
 ];
 
 let isGameRunning = false;
-let mainIntervalId = null;
+let mainAnimationId = null;
 let enemyIntervalId = null;
 let runningIntervalId = null;
 let timerIntervalId = null;
@@ -64,29 +64,32 @@ function gameStart() {
 
   isGameRunning = true;
   //Starts the main game loop which updates enemy movement and checks for collisions on each animation frame
-  mainIntervalId = requestAnimationFrame(gameLoop); 
+  mainAnimationId = requestAnimationFrame(gameLoop); 
   enemyIntervalId = setInterval(addEnemy, 2000);//Spawn objects every 2 seconds
   runningIntervalId = setInterval(() => { //Interval to create running effect
     playerObj.changeSprite();
   }, 150);
 }
 
+//Main gameplay loop: moves enemies, removes off-screen objects, checks collisions, and schedules the next animation frame
 function gameLoop() {
   if (!isGameRunning) {
     return;
   }
+  //Loops through every active enemy and update its position
   enemiesArr.forEach((enemy) => {
     enemy.move();
   });
-
+  //Remove enemies that have moved out of the picture
   checkEnemyDespawn();
+  //Check for collisions
   checkCollisionPlayerEnemy();
 
   if (!isGameRunning) {
     return;
   }
-
-  mainIntervalId = requestAnimationFrame(gameLoop);
+  //Request the next animation frame to keep the game running
+  mainAnimationId = requestAnimationFrame(gameLoop);
 }
 
 function addPlayer() {
@@ -230,7 +233,7 @@ window.addEventListener("keydown", (event) => {
     //Checks three conditions before jumping can be implemented
     if (!playerObj.isJumping && !event.repeat && !playerObj.isDucking) {
       playerObj.isJumping = true;
-      playerObj.node.src = "/images/characterJump.png";
+      playerObj.node.src = "./images/sprites/character2Jump.png";
 
       playerObj.moveUp();
       playerObj.moveUp();
@@ -241,13 +244,13 @@ window.addEventListener("keydown", (event) => {
         playerObj.moveDown();
         playerObj.moveDown();
 
-        playerObj.node.src = "/images/characterRun1.png";
+        playerObj.node.src = "./images/sprites/character2Run1.png";
         playerObj.isJumping = false;
       }, 500);
     }
   } else if (event.code === "ArrowDown") {
     if (!playerObj.isDucking && !playerObj.isJumping) {
-      playerObj.node.src = "/images/characterDuck.png";
+      playerObj.node.src = "./images/sprites/character2Duck.png";
       playerObj.isDucking = true;
       playerObj.duck();
     }
@@ -262,6 +265,6 @@ window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowDown" && playerObj.isDucking) {
     playerObj.isDucking = false;
     playerObj.duckReset();
-    playerObj.node.src = "/images/characterRun1.png";
+    playerObj.node.src = "./images/sprites/character2Run1.png";
   }
 });

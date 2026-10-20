@@ -1,7 +1,40 @@
+const characterSprites = {
+  level1: [
+    "./images/sprites/character1Run1.png",
+    "./images/sprites/character1Run2.png",
+    "./images/sprites/character1Jump.png",
+    "./images/sprites/character1Duck.png",
+  ],
+  level2: [
+    "./images/sprites/character2Run1.png",
+    "./images/sprites/character2Run2.png",
+    "./images/sprites/character2Jump.png",
+    "./images/sprites/character2Duck.png",
+  ],
+  level3: [
+    "./images/sprites/character3Run1.png",
+    "./images/sprites/character3Run2.png",
+    "./images/sprites/character3Jump.png",
+    "./images/sprites/character3Duck.png",
+  ],
+  level4: [
+    "./images/sprites/character4Run1.png",
+    "./images/sprites/character4Run2.png",
+    "./images/sprites/character4Jump.png",
+    "./images/sprites/character4Duck.png",
+  ],
+  level5: [
+    "./images/sprites/character5Run1.png",
+    "./images/sprites/character5Run2.png",
+    "./images/sprites/character5Jump.png",
+    "./images/sprites/character5Duck.png",
+  ]
+};
+
 class Player {
   constructor() {
     this.node = document.createElement("img");
-    this.node.src = "/images/characterRun1.png";
+    this.node.src = "./images/sprites/character1Run1.png";
     gameBoxNode.append(this.node);
     this.node.className = "player";
 
@@ -57,10 +90,10 @@ class Player {
       return;
     }
 
-    if (this.node.src.endsWith("characterRun1.png")) {
-      this.node.src = "/images/characterRun2.png";
-    } else if (this.node.src.endsWith("characterRun2.png")) {
-      this.node.src = "/images/characterRun1.png";
+    if (this.node.src.endsWith("character1Run1.png")) {
+      this.node.src = "./images/sprites/character1Run2.png";
+    } else if (this.node.src.endsWith("character1Run2.png")) {
+      this.node.src = "./images/sprites/character1Run1.png";
     }
   }
 }
