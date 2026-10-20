@@ -1,3 +1,20 @@
+const enemiesAirArr = [
+  "./images/smallflags.png",
+  "./images/discoball.png",
+  "./images/featherboa.png",
+  "./images/glittercloud.png",
+  "./images/smallflags.png",
+  "./images/heart.png",
+];
+const enemiesGroundArr = [
+  "./images/cupcake.png",
+  "./images/flowers.png",
+  "./images/megaphone.png",
+  "./images/prideflag.png",
+  "./images/paint.png",
+  "./images/skates.png",
+];
+
 class Enemy {
   constructor(posY) {
     this.node = document.createElement("img");

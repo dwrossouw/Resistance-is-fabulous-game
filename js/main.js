@@ -21,22 +21,6 @@ gameMusic.loop = true;
 //GLOBAL GAME VARIABLES
 let playerObj = null;
 let enemiesArr = [];
-let enemiesAirArr = [
-  "./images/smallflags.png",
-  "./images/discoball.png",
-  "./images/featherboa.png",
-  "./images/glittercloud.png",
-  "./images/smallflags.png",
-  "./images/heart.png",
-];
-let enemiesGroundArr = [
-  "./images/cupcake.png",
-  "./images/flowers.png",
-  "./images/megaphone.png",
-  "./images/prideflag.png",
-  "./images/paint.png",
-  "./images/skates.png",
-];
 
 let isGameRunning = false;
 let mainAnimationId = null;
@@ -74,7 +58,7 @@ function gameStart() {
 
 //Main gameplay loop: moves enemies, removes off-screen objects, checks collisions, and schedules the next animation frame
 function gameLoop() {
-  if (!isGameRunning) {
+  if (!isGameRunning) { //Stops the loop if the game is no longer running
     return;
   }
   //Loops through every active enemy and update its position
@@ -86,6 +70,7 @@ function gameLoop() {
   //Check for collisions
   checkCollisionPlayerEnemy();
 
+  //Checks if game is still running after collisions
   if (!isGameRunning) {
     return;
   }
@@ -112,13 +97,16 @@ function addEnemy() {
   enemiesArr.push(newEnemy);
 }
 
+//Removes elements that have moved off the left side of the screen
 function checkEnemyDespawn() {
   if (enemiesArr[0] && enemiesArr[0].x < -100) {
-    enemiesArr[0].node.remove();
-    enemiesArr.shift();
+    enemiesArr[0].node.remove(); //Remove the HTML element
+    enemiesArr.shift(); //Remove it from the array
   }
 }
 
+//Checks whether two game objects overlap
+//Returns true if they collide, or false if they do not
 function checkCollision(element1, element2) {
   return (
     element1.x < element2.x + element2.width &&
@@ -128,14 +116,15 @@ function checkCollision(element1, element2) {
   );
 }
 
+//Checks for collisions between the player and the obstacles
 function checkCollisionPlayerEnemy() {
-  enemiesArr.forEach((enemy) => {
+  enemiesArr.forEach((enemy) => { //Checks for each active obstacle
     if (checkCollision(enemy, playerObj)) {
-      if (!enemy.isColliding) {
-        fabCount++;
-        charLevel = `level${fabCount+1}`;
-        fabulousBar();
-        enemy.isColliding = true;
+      if (!enemy.isColliding) { //Initial isCollidng = false, so !false = true
+        fabCount++; //How many collisions have happened
+        charLevel = `level${fabCount+1}`; //Variable to keep track of the appearance of the character
+        fabulousBar(); //Update the progress bar at the top
+        enemy.isColliding = true; //Change state to true as not to trigger collision incident again multiple times (Due the requestAnimationFrame)
         if (fabCount >= 5) {
           gameOver();
         }
@@ -147,30 +136,31 @@ function checkCollisionPlayerEnemy() {
 }
 
 function gameOver() {
-  gameMusic.pause();
-  gameMusic.currentTime = 0;
-  gameOverMusic.play();
+  gameMusic.pause(); //Stop game music
+  gameMusic.currentTime = 0; //Reset music to beginning
+  gameOverMusic.play(); //Start game over audio
 
-  isGameRunning = false;
-  clearInterval(enemyIntervalId);
-  clearInterval(runningIntervalId);
-  clearInterval(timerIntervalId);
-  playerObj.node.src = characterSprites["level6"][0];
+  isGameRunning = false; //This is the main variable that controls the game loop
+  clearInterval(enemyIntervalId); //Stop obstacles from spawning
+  clearInterval(runningIntervalId); //Stop running animation
+  clearInterval(timerIntervalId); //Stop game timer
+  playerObj.node.src = characterSprites["level6"][0]; //Change to the last outfit for the character just before the screen changes to the game over screen
 
-  setTimeout(() => {
+  setTimeout(() => { //Creates a very short delay to see the character change
     gameScreenNode.style.display = "none";
     gameOverScreenNode.style.display = "flex";
   }, 500);
 
-  finalTimeGameOver();
+  finalTimeGameOver(); //Display the final survival time and message
 }
 
+//Returns game to original state so a new game can be played
 function gameRestart() {
   gameOverScreenNode.style.display = "none";
   startScreenNode.style.display = "flex";
-  playerObj.node.remove();
+  playerObj.node.remove(); //Remove the player's image
 
-  enemiesArr.forEach((element) => {
+  enemiesArr.forEach((element) => {//remove all the obstacle's images
     element.node.remove();
   });
 
@@ -194,9 +184,11 @@ function startTimer() {
 }
 
 function timerUpdate() {
+  //Calculate the number of minutes, convert it to a string and add a leading zero if necessary
   const minutes = Math.floor(timer / 60)
     .toString()
     .padStart(2, "0");
+      //Calculate the number of seconds, convert it to a string and add a leading zero if necessary
   const seconds = (timer % 60).toString().padStart(2, "0");
   finalTime = timerNode.innerText = `${minutes}:${seconds}`;
 }
@@ -220,49 +212,51 @@ function finalTimeGameOver() {
 
 //EVENT LISTENERS
 startBtnNode.addEventListener("click", (event) => {
-  event.stopPropagation();
-  gameStart();
+  event.stopPropagation(); //Prevent the click from triggering event listeners on parent elements
+  gameStart(); //The official start of the game loop
 });
+
 restartBtnNode.addEventListener("click", gameRestart);
 
 startScreenNode.addEventListener("click", () => {
-  startMusic.play();
+  startMusic.play(); //Click anywhere on the start screen to start the music
 });
 
+//Keyboard input events to control the character
 window.addEventListener("keydown", (event) => {
-  
-  if (!isGameRunning) {
+  if (!isGameRunning) { //Ignore any keyboard events if the game is not running
     return;
   }
   if (event.code === "ArrowUp") {
     //Checks three conditions before jumping can be implemented
     if (!playerObj.isJumping && !event.repeat && !playerObj.isDucking) {
       playerObj.isJumping = true;
-      playerObj.node.src = characterSprites [charLevel][2];
+      playerObj.node.src = characterSprites [charLevel][2]; //Change the character's sprite to the jumping sprite
 
       playerObj.moveUp();
       playerObj.moveUp();
       playerObj.moveUp();
 
-      setTimeout(() => {
+      setTimeout(() => { //The character stays in the air for half a second.
         playerObj.moveDown();
         playerObj.moveDown();
         playerObj.moveDown();
 
-        playerObj.node.src = characterSprites [charLevel][0];
-        playerObj.isJumping = false;
+        playerObj.node.src = characterSprites [charLevel][0];  //Change the character's sprite back to the running sprite
+        playerObj.isJumping = false; //Reset the isJumping variable to finish the jumping action
       }, 500);
     }
-  } else if (event.code === "ArrowDown") {
-    if (!playerObj.isDucking && !playerObj.isJumping) {
-      playerObj.node.src = characterSprites [charLevel][3];
-      playerObj.isDucking = true;
-      playerObj.duck();
+  } else if (event.code === "ArrowDown") { 
+    if (!playerObj.isDucking && !playerObj.isJumping) { //Only able to duck if the character is not jumping or ducking already
+      playerObj.node.src = characterSprites [charLevel][3]; //Change character's sprite
+      playerObj.isDucking = true; //Change the ducking state
+      playerObj.duck(); //Change character's position
     }
   }
 });
 
-window.addEventListener("keyup", (event) => {
+//Checks for when the player releases the down arrow key after ducking
+window.addEventListener("keyup", (event) => { 
   if (!isGameRunning) {
     return;
   }
