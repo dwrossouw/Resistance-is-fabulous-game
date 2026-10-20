@@ -1,6 +1,10 @@
 ﻿# 🌈 Resistance Is FABULOUS!
 **You can run. You can't resist.**
 
+<p align="left">
+  <img src="./images/screenshots/welcomescreen.jpg" alt="Welcome Screen" width="400">
+</p>
+
 ## 🎮 Description
 
 **Resistance Is FABULOUS!**  is a humorous, colourful, endless-runner browser game built using HTML, CSS, and JavaScript.
@@ -56,6 +60,9 @@ The character changes appearance after every collision:
     
 
 Each gameplay stage includes four character sprites: two running animations, one jumping animation, and one ducking animation.
+<p align="left">
+  <img src="./images/screenshots/gameplayscreen.jpg" alt="Welcome Screen" width="400">
+</p>
 
 ### Random Obstacles
 
@@ -84,6 +91,9 @@ The game features a scrolling cityscape with multiple background layers, creatin
 ### Background Music
 
 Different music tracks accompany the start screen, gameplay, and game-over screen.
+<p align="left">
+  <img src="./images/screenshots/gameoverscreen.jpg" alt="Welcome Screen" width="400">
+</p>
 
 ## 💻 Technologies Used
 
@@ -262,8 +272,3 @@ Character artwork and other visual or audio assets were developed with the assis
 **You can run. You can't resist.**
 
 _Resistance Is FABULOUS!_ 💖
-
-![Welcome Screen](https://drive.google.com/file/d/1TV7xZFBk-4DLVxtgmdL7_DGe-hrmX4Oa/view?usp=drive_link)
-
-![Game Screen](https://drive.google.com/file/d/1sY8hCuTLTthio8hr59uqOCyO35oemwzY/view?usp=drive_link)
-![Game Over Screen](https://drive.google.com/file/d/1RPWL5Or_EuXsLaL2kw9NIaqp9B351ckR/view?usp=drive_link)
