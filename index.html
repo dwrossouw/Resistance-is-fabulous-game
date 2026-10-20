@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="start-screen" class="container">
-      <img src="./images/warning.png" alt="warning image">
+      <img src="./images/warning.png" alt="warning image" />
       <h1>Resistance is FABULOUS!</h1>
       <p>Avoid the fabulous obstacles for as long as possible!</p>
       <p><span>⬆️ Jump over </span><span>⬇️ Duck under</span></p>
@@ -27,15 +27,28 @@
 
         <div id="game-display">
           <span id="timer">00:00</span>
-          <div id="fab-meter"><img id="fab-object" src="./images/crown.png" alt="crown"></img></div>
+          <div id="fab-meter">
+            <div class="meter-dots dot-zero"></div>
+            <div class="meter-dots dot-one"></div>
+            <div class="meter-dots dot-two"></div>
+            <div class="meter-dots dot-three"></div>
+            <div class="meter-dots dot-four"></div>
+            <div class="meter-dots dot-five"></div>
+            <img id="fab-object" src="./images/crown.png" alt="crown" />
+          </div>
+        </div>
+
+        <div id="fab-labels">
+          <span id="fab-label-one">Boring...</span>
+          <span id="fab-label-two">Fabulous!</span>
         </div>
       </div>
     </div>
 
     <div id="game-over-screen" class="container">
-      <img src="./images/gameover.png" alt="gameover pic">
+      <img src="./images/gameover.png" alt="gameover pic" />
       <h1>CONGRATULATIONS!!</h1>
-      <h3>It took you ... to become FABULOUS!</h3>
+      <h3>You resisted only... before becoming FABULOUS!</h3>
       <button id="restart-btn">Restart Game</button>
     </div>
 
