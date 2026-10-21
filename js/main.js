@@ -31,7 +31,7 @@ let timerIntervalId = null;
 let timer = 0;
 let finalTime;
 let fabCount = 0;
-let charLevel = 'level1';
+let charLevel = "level1";
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -49,16 +49,18 @@ function gameStart() {
 
   isGameRunning = true;
   //Starts the main game loop which updates enemy movement and checks for collisions on each animation frame
-  mainAnimationId = requestAnimationFrame(gameLoop); 
-  enemyIntervalId = setInterval(addEnemy, 2000);//Spawn objects every 2 seconds
-  runningIntervalId = setInterval(() => { //Interval to create running effect
+  mainAnimationId = requestAnimationFrame(gameLoop);
+  enemyIntervalId = setInterval(addEnemy, 2000); //Spawn objects every 2 seconds
+  runningIntervalId = setInterval(() => {
+    //Interval to create running effect
     playerObj.changeSprite(charLevel);
   }, 150);
 }
 
 //Main gameplay loop: moves enemies, removes off-screen objects, checks collisions, and schedules the next animation frame
 function gameLoop() {
-  if (!isGameRunning) { //Stops the loop if the game is no longer running
+  if (!isGameRunning) {
+    //Stops the loop if the game is no longer running
     return;
   }
   //Loops through every active enemy and update its position
@@ -118,11 +120,13 @@ function checkCollision(element1, element2) {
 
 //Checks for collisions between the player and the obstacles
 function checkCollisionPlayerEnemy() {
-  enemiesArr.forEach((enemy) => { //Checks for each active obstacle
+  enemiesArr.forEach((enemy) => {
+    //Checks for each active obstacle
     if (checkCollision(enemy, playerObj)) {
-      if (!enemy.isColliding) { //Initial isCollidng = false, so !false = true
+      if (!enemy.isColliding) {
+        //Initial isCollidng = false, so !false = true
         fabCount++; //How many collisions have happened
-        charLevel = `level${fabCount+1}`; //Variable to keep track of the appearance of the character
+        charLevel = `level${fabCount + 1}`; //Variable to keep track of the appearance of the character
         fabulousBar(); //Update the progress bar at the top
         enemy.isColliding = true; //Change state to true as not to trigger collision incident again multiple times (Due the requestAnimationFrame)
         if (fabCount >= 5) {
@@ -146,7 +150,8 @@ function gameOver() {
   clearInterval(timerIntervalId); //Stop game timer
   playerObj.node.src = characterSprites["level6"][0]; //Change to the last outfit for the character just before the screen changes to the game over screen
 
-  setTimeout(() => { //Creates a very short delay to see the character change
+  setTimeout(() => {
+    //Creates a very short delay to see the character change
     gameScreenNode.style.display = "none";
     gameOverScreenNode.style.display = "flex";
   }, 500);
@@ -160,7 +165,8 @@ function gameRestart() {
   startScreenNode.style.display = "flex";
   playerObj.node.remove(); //Remove the player's image
 
-  enemiesArr.forEach((element) => {//remove all the obstacle's images
+  enemiesArr.forEach((element) => {
+    //remove all the obstacle's images
     element.node.remove();
   });
 
@@ -168,7 +174,7 @@ function gameRestart() {
   enemiesArr = [];
   timer = 0;
   fabCount = 0;
-  charLevel = 'level1';
+  charLevel = "level1";
   fabObjectNode.style.left = "0px";
   timerUpdate();
   isGameRunning = false;
@@ -188,7 +194,7 @@ function timerUpdate() {
   const minutes = Math.floor(timer / 60)
     .toString()
     .padStart(2, "0");
-      //Calculate the number of seconds, convert it to a string and add a leading zero if necessary
+  //Calculate the number of seconds, convert it to a string and add a leading zero if necessary
   const seconds = (timer % 60).toString().padStart(2, "0");
   finalTime = timerNode.innerText = `${minutes}:${seconds}`;
 }
@@ -224,31 +230,37 @@ startScreenNode.addEventListener("click", () => {
 
 //Keyboard input events to control the character
 window.addEventListener("keydown", (event) => {
-  if (!isGameRunning) { //Ignore any keyboard events if the game is not running
+  if (!isGameRunning) {
+    //Ignore any keyboard events if the game is not running
     return;
   }
   if (event.code === "ArrowUp") {
     //Checks three conditions before jumping can be implemented
     if (!playerObj.isJumping && !event.repeat && !playerObj.isDucking) {
       playerObj.isJumping = true;
-      playerObj.node.src = characterSprites [charLevel][2]; //Change the character's sprite to the jumping sprite
+
+      console.log("Character level:", charLevel);
+      console.log("Jump image:", characterSprites[charLevel][2]);
+      playerObj.node.src = characterSprites[charLevel][2]; //Change the character's sprite to the jumping sprite
 
       playerObj.moveUp();
       playerObj.moveUp();
       playerObj.moveUp();
 
-      setTimeout(() => { //The character stays in the air for half a second.
+      setTimeout(() => {
+        //The character stays in the air for half a second.
         playerObj.moveDown();
         playerObj.moveDown();
         playerObj.moveDown();
 
-        playerObj.node.src = characterSprites [charLevel][0];  //Change the character's sprite back to the running sprite
+        playerObj.node.src = characterSprites[charLevel][0]; //Change the character's sprite back to the running sprite
         playerObj.isJumping = false; //Reset the isJumping variable to finish the jumping action
       }, 500);
     }
-  } else if (event.code === "ArrowDown") { 
-    if (!playerObj.isDucking && !playerObj.isJumping) { //Only able to duck if the character is not jumping or ducking already
-      playerObj.node.src = characterSprites [charLevel][3]; //Change character's sprite
+  } else if (event.code === "ArrowDown") {
+    if (!playerObj.isDucking && !playerObj.isJumping) {
+      //Only able to duck if the character is not jumping or ducking already
+      playerObj.node.src = characterSprites[charLevel][3]; //Change character's sprite
       playerObj.isDucking = true; //Change the ducking state
       playerObj.duck(); //Change character's position
     }
@@ -256,7 +268,7 @@ window.addEventListener("keydown", (event) => {
 });
 
 //Checks for when the player releases the down arrow key after ducking
-window.addEventListener("keyup", (event) => { 
+window.addEventListener("keyup", (event) => {
   if (!isGameRunning) {
     return;
   }
@@ -264,6 +276,6 @@ window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowDown" && playerObj.isDucking) {
     playerObj.isDucking = false;
     playerObj.duckReset();
-    playerObj.node.src = characterSprites [charLevel][0];
+    playerObj.node.src = characterSprites[charLevel][0];
   }
 });

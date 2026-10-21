@@ -18,7 +18,6 @@ const enemiesGroundArr = [
 class Enemy {
   constructor(posY) {
     this.node = document.createElement("img");
-    this.node.src = "/images/glittercloud.png";
     gameBoxNode.append(this.node);
     this.node.className = "enemy";
     this.isColliding = false;
