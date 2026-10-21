@@ -37,7 +37,7 @@ const characterSprites = {
 class Player {
   constructor() {
     this.node = document.createElement("img");
-    this.node.src = "./images/sprites/character1Run1.png";
+    this.node.src = characterSprites.level1[0];
     gameBoxNode.append(this.node);
     this.node.className = "player";
 
@@ -92,7 +92,7 @@ class Player {
     if (this.isJumping || this.isDucking) {
       return;
     }
-    
+
     if (this.node.src.endsWith("Run1.png")) {
       this.node.src = characterSprites[charLevel][1];
     } else if (this.node.src.endsWith("Run2.png")) {

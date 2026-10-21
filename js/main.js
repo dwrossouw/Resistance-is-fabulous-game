@@ -2,13 +2,12 @@
 const startScreenNode = document.querySelector("#start-screen");
 const gameScreenNode = document.querySelector("#game-screen");
 const gameOverScreenNode = document.querySelector("#game-over-screen");
+const gameBoxNode = document.querySelector("#game-box");
 const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
-const gameBoxNode = document.querySelector("#game-box");
 const timerNode = document.querySelector("#timer");
 const fabObjectNode = document.querySelector("#fab-object");
 const gameOverTimeNode = document.querySelector("#game-over-screen h3");
-const startScreenImageNode = document.querySelector("#start-screen img");
 
 //AUDIO ELEMENTS
 const startMusic = new Audio("./sounds/startMusic.mp3");
@@ -30,7 +29,6 @@ let runningIntervalId = null;
 let timerIntervalId = null;
 
 let timer = 0;
-let finalTime;
 let fabCount = 0;
 let charLevel = "level1";
 let superEnemyCount = 0;
@@ -45,11 +43,12 @@ function gameStart() {
   //Adding the initial elements of the game
   addPlayer();
   addEnemy();
-  startTimer();
-
-  gameMusic.play();
 
   isGameRunning = true;
+
+  startTimer();
+  gameMusic.play();
+
   //Starts the main game loop which updates enemy movement and checks for collisions on each animation frame
   mainAnimationId = requestAnimationFrame(gameLoop);
   enemyIntervalId = setInterval(addEnemy, 2000); //Spawn objects every 2 seconds
@@ -107,7 +106,6 @@ function addEnemy() {
 }
 
 function spawnSuperEnemy() {
-  //20% chance of creating a super enemy
   if (Math.random() < 0.3) {
     let superEnemy = new Enemy(265);
     superEnemy.width = 200;
@@ -116,7 +114,9 @@ function spawnSuperEnemy() {
     superEnemy.node.style.height = "100px";
     superEnemy.node.src = superEnemyArr[superEnemyCount];
 
-    superEnemyCount === 3 ? (superEnemyCount = 0) : superEnemyCount++;
+    superEnemyCount === superEnemyArr.length - 1
+      ? (superEnemyCount = 0)
+      : superEnemyCount++;
     return superEnemy;
   }
   return null;
@@ -124,7 +124,7 @@ function spawnSuperEnemy() {
 
 //Removes elements that have moved off the left side of the screen
 function checkEnemyDespawn() {
-  if (enemiesArr[0] && enemiesArr[0].x < -100) {
+  if (enemiesArr[0] && enemiesArr[0].x < -enemiesArr[0].width) {
     enemiesArr[0].node.remove(); //Remove the HTML element
     enemiesArr.shift(); //Remove it from the array
   }
@@ -153,7 +153,9 @@ function checkCollisionPlayerEnemy() {
         charLevel = `level${fabCount + 1}`; //Variable to keep track of the appearance of the character
         fabulousBar(); //Update the progress bar at the top
         enemy.isColliding = true; //Change state to true as not to trigger collision incident again multiple times (Due the requestAnimationFrame)
+
         if (fabCount >= 5) {
+          enemy.node.style.display = "none";
           gameOver();
         }
       }
@@ -172,7 +174,8 @@ function gameOver() {
   clearInterval(enemyIntervalId); //Stop obstacles from spawning
   clearInterval(runningIntervalId); //Stop running animation
   clearInterval(timerIntervalId); //Stop game timer
-  playerObj.node.src = characterSprites["level6"][0]; //Change to the last outfit for the character just before the screen changes to the game over screen
+  cancelAnimationFrame(mainAnimationId);
+  playerObj.node.src = characterSprites.level6[0]; //Change to the last outfit for the character just before the screen changes to the game over screen
 
   setTimeout(() => {
     //Creates a very short delay to see the character change
@@ -189,9 +192,9 @@ function gameRestart() {
   startScreenNode.style.display = "flex";
   playerObj.node.remove(); //Remove the player's image
 
-  enemiesArr.forEach((element) => {
+  enemiesArr.forEach((enemy) => {
     //remove all the obstacle's images
-    element.node.remove();
+    enemy.node.remove();
   });
 
   playerObj = null;
@@ -221,11 +224,11 @@ function timerUpdate() {
     .padStart(2, "0");
   //Calculate the number of seconds, convert it to a string and add a leading zero if necessary
   const seconds = (timer % 60).toString().padStart(2, "0");
-  finalTime = timerNode.innerText = `${minutes}:${seconds}`;
+  timerNode.innerText = `${minutes}:${seconds}`;
 }
 
 function fabulousBar() {
-  let progress = fabCount * 120;
+  const progress = fabCount * 120;
   fabObjectNode.style.left = `${progress}px`;
 }
 
@@ -233,10 +236,12 @@ function finalTimeGameOver() {
   let message = ``;
   if (timer < 60) {
     message = `You resisted only ${timer} seconds before becoming FABULOUS!`;
-  } else if (timer >= 60) {
+  } else {
     const min = Math.floor(timer / 60);
     const sec = timer % 60;
-    message = `You resisted only ${min} minute(s) and ${sec} second(s)before becoming FABULOUS!`;
+    const minuteText = min === 1 ? "minute" : "minutes";
+    const secondText = sec === 1 ? "second" : "seconds";
+    message = `You resisted only ${min} ${minuteText} and ${sec} ${secondText} before becoming FABULOUS!`;
   }
   gameOverTimeNode.innerText = message;
 }
@@ -275,7 +280,11 @@ window.addEventListener("keydown", (event) => {
         playerObj.moveDown();
         playerObj.moveDown();
 
-        playerObj.node.src = characterSprites[charLevel][0]; //Change the character's sprite back to the running sprite
+        //Change the character's sprite back to the running sprite
+        if (isGameRunning) {
+          playerObj.node.src = characterSprites[charLevel][0];
+        }
+
         playerObj.isJumping = false; //Reset the isJumping variable to finish the jumping action
       }, 500);
     }

@@ -4,7 +4,7 @@ const enemiesAirArr = [
   "./images/enemy/discoball.png",
   "./images/enemy/featherboa.png",
   "./images/enemy/glittercloud.png",
-  "./images/enemy/smallflags.png",
+  "./images/enemy/unicorn.png",
   "./images/enemy/heart.png",
 ];
 const enemiesGroundArr = [
@@ -21,7 +21,7 @@ const superEnemyArr = [
   "./images/enemy/prideparade.png",
   "./images/enemy/boombox.png",
   "./images/enemy/glitterbomb.png",
-  "/images/enemy/rainbowcake.png"
+  "./images/enemy/rainbowcake.png"
 ];
 
 //ENEMY CLASS
