@@ -21,8 +21,9 @@ class Enemy {
     this.node.src = "/images/glittercloud.png";
     gameBoxNode.append(this.node);
     this.node.className = "enemy";
+    this.isColliding = false;
 
-    this.x = 750;
+    this.x = 800;
     this.y = posY;
     this.width = 50;
     this.height = 50;
