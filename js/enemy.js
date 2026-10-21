@@ -1,23 +1,30 @@
+//GlOBAL ENEMY ELEMENTS
 const enemiesAirArr = [
-  "./images/smallflags.png",
-  "./images/discoball.png",
-  "./images/featherboa.png",
-  "./images/glittercloud.png",
-  "./images/smallflags.png",
-  "./images/heart.png",
+  "./images/enemy/smallflags.png",
+  "./images/enemy/discoball.png",
+  "./images/enemy/featherboa.png",
+  "./images/enemy/glittercloud.png",
+  "./images/enemy/smallflags.png",
+  "./images/enemy/heart.png",
 ];
 const enemiesGroundArr = [
-  "./images/cupcake.png",
-  "./images/flowers.png",
-  "./images/megaphone.png",
-  "./images/prideflag.png",
-  "./images/paint.png",
-  "./images/skates.png",
+  "./images/enemy/cupcake.png",
+  "./images/enemy/flowers.png",
+  "./images/enemy/megaphone.png",
+  "./images/enemy/prideflag.png",
+  "./images/enemy/paint.png",
+  "./images/enemy/skates.png",
 ];
 
-const superEnemyArr = ["./images/glitterbomb.png"];
+const superEnemyArr = [
+  "./images/enemy/pridefloat.png",
+  "./images/enemy/prideparade.png",
+  "./images/enemy/boombox.png",
+  "./images/enemy/glitterbomb.png",
+  "/images/enemy/rainbowcake.png"
+];
 
-
+//ENEMY CLASS
 class Enemy {
   constructor(posY) {
     this.node = document.createElement("img");

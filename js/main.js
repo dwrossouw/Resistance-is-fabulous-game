@@ -33,6 +33,7 @@ let timer = 0;
 let finalTime;
 let fabCount = 0;
 let charLevel = "level1";
+let superEnemyCount = 0;
 
 //GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -90,7 +91,7 @@ function addEnemy() {
   let picArrLength =
     posY === 315 ? enemiesGroundArr.length : enemiesAirArr.length;
   let randomEnemy = Math.floor(Math.random() * picArrLength);
-  let newEnemy = new Enemy();
+  let newEnemy;
 
   if (posY === 315) {
     newEnemy = spawnSuperEnemy();
@@ -99,22 +100,23 @@ function addEnemy() {
       newEnemy.node.src = enemiesGroundArr[randomEnemy];
     }
   } else if (posY === 265) {
-    newEnemy = new Enemy (posY);
+    newEnemy = new Enemy(posY);
     newEnemy.node.src = enemiesAirArr[randomEnemy];
   }
   enemiesArr.push(newEnemy);
 }
 
 function spawnSuperEnemy() {
-//20% chance of creating a super enemy
-  if (Math.random() < 0.2) {
+  //20% chance of creating a super enemy
+  if (Math.random() < 0.3) {
     let superEnemy = new Enemy(265);
     superEnemy.width = 200;
     superEnemy.height = 100;
     superEnemy.node.style.width = "200px";
     superEnemy.node.style.height = "100px";
-    superEnemy.node.src = superEnemyArr[0];
+    superEnemy.node.src = superEnemyArr[superEnemyCount];
 
+    superEnemyCount === 3 ? (superEnemyCount = 0) : superEnemyCount++;
     return superEnemy;
   }
   return null;
@@ -197,6 +199,7 @@ function gameRestart() {
   timer = 0;
   fabCount = 0;
   charLevel = "level1";
+  superEnemyCount = 0;
   fabObjectNode.style.left = "0px";
   timerUpdate();
   isGameRunning = false;
