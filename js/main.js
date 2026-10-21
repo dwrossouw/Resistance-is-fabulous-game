@@ -14,6 +14,7 @@ const startScreenImageNode = document.querySelector("#start-screen img");
 const startMusic = new Audio("./sounds/startMusic.mp3");
 const gameMusic = new Audio("./sounds/gameMusic.mp3");
 const gameOverMusic = new Audio("./sounds/gameOverMusic.mp3");
+const collisionSound = new Audio ("./sounds/collision.wav");
 
 startMusic.loop = true;
 gameMusic.loop = true;
@@ -126,6 +127,7 @@ function checkCollisionPlayerEnemy() {
       if (!enemy.isColliding) {
         //Initial isCollidng = false, so !false = true
         fabCount++; //How many collisions have happened
+        collisionSound.play();
         charLevel = `level${fabCount + 1}`; //Variable to keep track of the appearance of the character
         fabulousBar(); //Update the progress bar at the top
         enemy.isColliding = true; //Change state to true as not to trigger collision incident again multiple times (Due the requestAnimationFrame)
