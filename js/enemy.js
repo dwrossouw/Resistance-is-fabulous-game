@@ -15,6 +15,9 @@ const enemiesGroundArr = [
   "./images/skates.png",
 ];
 
+const superEnemyArr = ["./images/glitterbomb.png"];
+
+
 class Enemy {
   constructor(posY) {
     this.node = document.createElement("img");

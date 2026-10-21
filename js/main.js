@@ -14,7 +14,7 @@ const startScreenImageNode = document.querySelector("#start-screen img");
 const startMusic = new Audio("./sounds/startMusic.mp3");
 const gameMusic = new Audio("./sounds/gameMusic.mp3");
 const gameOverMusic = new Audio("./sounds/gameOverMusic.mp3");
-const collisionSound = new Audio ("./sounds/collision.wav");
+const collisionSound = new Audio("./sounds/collision.wav");
 
 startMusic.loop = true;
 gameMusic.loop = true;
@@ -90,14 +90,34 @@ function addEnemy() {
   let picArrLength =
     posY === 315 ? enemiesGroundArr.length : enemiesAirArr.length;
   let randomEnemy = Math.floor(Math.random() * picArrLength);
-  let newEnemy = new Enemy(posY);
+  let newEnemy = new Enemy();
 
   if (posY === 315) {
-    newEnemy.node.src = enemiesGroundArr[randomEnemy];
+    newEnemy = spawnSuperEnemy();
+    if (!newEnemy) {
+      newEnemy = new Enemy(posY);
+      newEnemy.node.src = enemiesGroundArr[randomEnemy];
+    }
   } else if (posY === 265) {
+    newEnemy = new Enemy (posY);
     newEnemy.node.src = enemiesAirArr[randomEnemy];
   }
   enemiesArr.push(newEnemy);
+}
+
+function spawnSuperEnemy() {
+//20% chance of creating a super enemy
+  if (Math.random() < 0.2) {
+    let superEnemy = new Enemy(265);
+    superEnemy.width = 200;
+    superEnemy.height = 100;
+    superEnemy.node.style.width = "200px";
+    superEnemy.node.style.height = "100px";
+    superEnemy.node.src = superEnemyArr[0];
+
+    return superEnemy;
+  }
+  return null;
 }
 
 //Removes elements that have moved off the left side of the screen
@@ -240,9 +260,6 @@ window.addEventListener("keydown", (event) => {
     //Checks three conditions before jumping can be implemented
     if (!playerObj.isJumping && !event.repeat && !playerObj.isDucking) {
       playerObj.isJumping = true;
-
-      console.log("Character level:", charLevel);
-      console.log("Jump image:", characterSprites[charLevel][2]);
       playerObj.node.src = characterSprites[charLevel][2]; //Change the character's sprite to the jumping sprite
 
       playerObj.moveUp();

@@ -1,3 +1,4 @@
+//GLOBAL PLAYER ELEMENTS
 const characterSprites = {
   level1: [
     "./images/sprites/character1Run1.png",
@@ -32,6 +33,7 @@ const characterSprites = {
   level6: ["./images/sprites/character6.png"],
 };
 
+//PLAYER CLASS
 class Player {
   constructor() {
     this.node = document.createElement("img");
@@ -90,7 +92,7 @@ class Player {
     if (this.isJumping || this.isDucking) {
       return;
     }
-
+    
     if (this.node.src.endsWith("Run1.png")) {
       this.node.src = characterSprites[charLevel][1];
     } else if (this.node.src.endsWith("Run2.png")) {
