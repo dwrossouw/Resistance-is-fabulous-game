@@ -86,17 +86,17 @@ The character changes appearance after every collision:
 
   
 
--  **Stage 0:** The original character, determined to resist.
+-  **Stage 1:** The original character, determined to resist.
 
--  **Stage 1:** Pink heart-shaped sunglasses.
+-  **Stage 2:** Pink heart-shaped sunglasses.
 
--  **Stage 2:** A glittery cowboy hat.
+-  **Stage 3:** A glittery cowboy hat.
 
--  **Stage 3:** A sparkling pink jacket.
+-  **Stage 4:** A sparkling pink jacket.
 
--  **Stage 4:** White trousers, rainbow Pride shoes, and a bright pink feather boa.
+-  **Stage 5:** White trousers, rainbow Pride shoes, and a bright pink feather boa.
 
--  **Stage 5:** The ultimate fabulous transformation!
+-  **Stage 6:** The ultimate fabulous transformation!
 
   
 
