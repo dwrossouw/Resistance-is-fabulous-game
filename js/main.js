@@ -106,7 +106,7 @@ function addEnemy() {
 }
 
 function spawnSuperEnemy() {
-  if (Math.random() < 0.3) {
+  if (Math.random() < 0.2) {
     let superEnemy = new Enemy(265);
     superEnemy.width = 200;
     superEnemy.height = 100;
