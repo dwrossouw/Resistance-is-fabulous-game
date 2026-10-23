@@ -339,81 +339,25 @@ AI tools were used during the development of _Resistance Is FABULOUS!_ for learn
 
 **1. JavaScript Learning and Debugging**
 
-  
-
-**Example questions and prompts:**
-
-  
-
-- "Can you explain how requestAnimationFrame() works?"
-
-- "How do I stop music?"
-
-- "Why do both audio files play together?"
-
-- "How do I make the start-screen music loop?"
-
-  
-
-**How AI helped:**
-
-  
 
 ChatGPT explained JavaScript concepts, helped identify potential bugs, and suggested ways to approach problems.
 
-  
 
 Rather than simply copying solutions, I used these explanations to understand the underlying concepts and implement changes myself.
 
-  
 
 **2. Game Design and Character Development**
 
-  
-
-**Example prompts:**
-
-  
-
-- "We need four sprites for each state: two running, one jumping, and one ducking."
-
-- "His pants should be white, with Pride shoes and a bright pink feather boa."
-
-- "Generate all four horizontally with space in between and a transparent background."
-
-  
-
-**How AI helped:**
-
-  
 
 AI image generation was used to create and refine character artwork, including the different running, jumping, and ducking poses.
 
-  
 
 I provided reference images and feedback to maintain consistent proportions and progressively transform the character through the game's fabulousness levels.
 
-  
 
 **3. Audio and Music**
 
-  
-
-**Example questions:**
-
-  
-
-- "How do I add music to my game?"
-
-- "Can you do an event just from moving the mouse?"
-
-- "How do I stop music?"
-
-  
-
-**How AI helped:**
-
-  
+ 
 
 AI assisted with generating background music and explaining how to use JavaScript's Audio API to play, pause, loop, and reset music during game-state transitions.
 
